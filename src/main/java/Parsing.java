@@ -10,13 +10,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Parsing implements Runnable {
     private File file;
-    private ConcurrentLinkedQueue<Order> orders;
+    private ConcurrentLinkedQueue<Order> orders = new ConcurrentLinkedQueue<>();
     private List<String> lines = new ArrayList<>();
     private Convert convert;
 
-    public Parsing(File file, ConcurrentLinkedQueue<Order> orders) {
+    public Parsing(File file) {
         this.file = file;
-        this.orders = orders;
         this.convert = new Convert(orders);
     }
 
