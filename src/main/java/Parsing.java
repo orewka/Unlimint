@@ -2,8 +2,9 @@ import com.alibaba.fastjson.JSON;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -62,8 +63,7 @@ public class Parsing implements Runnable {
 
     private List<String> readFile() {
         try {
-            FileReader fr = new FileReader(file);
-            BufferedReader reader = new BufferedReader(fr);
+            BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
             String line = reader.readLine();
             while (line != null) {
                 lines.add(line);
