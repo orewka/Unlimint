@@ -1,12 +1,12 @@
 public class ExecutedOrder {
-    String id;
-    String amount;
-    String comment;
-    String filename;
-    int line;
-    String result;
+    private int id;
+    private float amount;
+    private String comment;
+    private String filename;
+    private int line;
+    private String result;
 
-    public ExecutedOrder(String id, String amount, String comment, String filename, int line, String result) {
+    public ExecutedOrder(int id, float amount, String comment, String filename, int line, String result) {
         this.id = id;
         this.amount = amount;
         this.comment = comment;
@@ -15,19 +15,19 @@ public class ExecutedOrder {
         this.result = result;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 

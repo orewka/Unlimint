@@ -13,11 +13,9 @@ public class Parsing implements Runnable {
     private File file;
     private ConcurrentLinkedQueue<Order> orders = new ConcurrentLinkedQueue<>();
     private List<String> lines = new ArrayList<>();
-    private Convert convert;
 
     public Parsing(File file) {
         this.file = file;
-        this.convert = new Convert(orders);
     }
 
     @Override
@@ -40,9 +38,15 @@ public class Parsing implements Runnable {
         readFile();
         for (String s : lines) {
             String[] temp = s.split(",");
-            Order order = new Order(temp[0], temp[1], temp[2], temp[3], file.getName(), ++i, "OK");
+            Order order = new Order(Integer.parseInt(temp[0]), Float.parseFloat(temp[1]), temp[2], temp[3], file.getName(), ++i, "OK");
             orders.add(order);
-            convert.run();
+            Thread convert = new Thread(new Convert(orders));
+            convert.start();
+            try {
+                convert.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -57,11 +61,17 @@ public class Parsing implements Runnable {
             order.setLine(++i);
             order.setResult("OK");
             orders.add(order);
-            convert.run();
+            Thread convert = new Thread(new Convert(orders));
+            convert.start();
+            try {
+                convert.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private List<String> readFile() {
+    private void readFile() {
         try {
             BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
             String line = reader.readLine();
@@ -72,7 +82,6 @@ public class Parsing implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return lines;
     }
 
     private String getFileExtension(File file) {

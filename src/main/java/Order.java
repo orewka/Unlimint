@@ -1,16 +1,16 @@
 public class Order {
-    String orderId;
-    String amount;
-    String currency;
-    String comment;
-    String filename;
-    int line;
-    String result;
+    private int orderId;
+    private float amount;
+    private String currency;
+    private String comment;
+    private String filename;
+    private int line;
+    private String result;
 
     public Order() {
     }
 
-    public Order(String orderId, String amount, String currency, String comment, String filename, int line, String result) {
+    public Order(int orderId, float amount, String currency, String comment, String filename, int line, String result) {
         this.orderId = orderId;
         this.amount = amount;
         this.currency = currency;
@@ -20,19 +20,19 @@ public class Order {
         this.result = result;
     }
 
-    public String getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
-    public String getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 

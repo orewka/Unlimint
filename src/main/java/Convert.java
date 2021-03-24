@@ -11,7 +11,7 @@ public class Convert implements Runnable {
 
     @Override
     public void run() {
-            Order order = orders.poll();
+        Order order = orders.poll();
             ExecutedOrder executedOrder = new ExecutedOrder(order.getOrderId(), order.getAmount(), order.getComment(), order.getFilename(), order.getLine(), order.getResult());
             String json = JSON.toJSONString(executedOrder);
             System.out.println(json);
