@@ -13,6 +13,7 @@ public class Parsing implements Runnable {
     private File file;
     private ConcurrentLinkedQueue<Order> orders = new ConcurrentLinkedQueue<>();
     private List<String> lines = new ArrayList<>();
+    private Thread convert = new Thread(new Convert(orders));
 
     public Parsing(File file) {
         this.file = file;
@@ -20,6 +21,7 @@ public class Parsing implements Runnable {
 
     @Override
     public void run() {
+        convert.start();
         switch (getFileExtension(file)) {
             case "csv" :
                 csv();
@@ -31,6 +33,7 @@ public class Parsing implements Runnable {
                 System.out.println("File not support");
                 break;
         }
+        convert.interrupt();
     }
 
     private void csv() {
@@ -40,13 +43,6 @@ public class Parsing implements Runnable {
             String[] temp = s.split(",");
             Order order = new Order(Integer.parseInt(temp[0]), Float.parseFloat(temp[1]), temp[2], temp[3], file.getName(), ++i, "OK");
             orders.add(order);
-            Thread convert = new Thread(new Convert(orders));
-            convert.start();
-            try {
-                convert.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -61,13 +57,6 @@ public class Parsing implements Runnable {
             order.setLine(++i);
             order.setResult("OK");
             orders.add(order);
-            Thread convert = new Thread(new Convert(orders));
-            convert.start();
-            try {
-                convert.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
