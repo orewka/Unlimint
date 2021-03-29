@@ -36,13 +36,10 @@
                 </executions>
                 <configuration>
                     <archive>
-                        <manifestFile>src/main/resources/MANIFEST.MF</manifestFile>
                         <manifest>
                             <addClasspath>true</addClasspath>
+                            <mainClass>Main</mainClass>
                         </manifest>
-                        <manifestEntries>
-                            <Built-By>itcuties</Built-By>
-                        </manifestEntries>
                     </archive>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>

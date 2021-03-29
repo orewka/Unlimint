@@ -7,13 +7,15 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Parsing implements Runnable {
     private File file;
-    private ConcurrentLinkedQueue<Order> orders = new ConcurrentLinkedQueue<>();
+    private LinkedBlockingQueue<Order> orders = new LinkedBlockingQueue<>();
     private List<String> lines = new ArrayList<>();
-    private Thread convert = new Thread(new Convert(orders));
+    private AtomicBoolean stop = new AtomicBoolean(false);
+    private Thread convert = new Thread(new Convert(orders, stop));
 
     public Parsing(File file) {
         this.file = file;
@@ -33,7 +35,7 @@ public class Parsing implements Runnable {
                 System.out.println("File not support");
                 break;
         }
-        convert.interrupt();
+        stop.set(true);
     }
 
     private void csv() {
@@ -42,7 +44,11 @@ public class Parsing implements Runnable {
         for (String s : lines) {
             String[] temp = s.split(",");
             Order order = new Order(Integer.parseInt(temp[0]), Float.parseFloat(temp[1]), temp[2], temp[3], file.getName(), ++i, "OK");
-            orders.add(order);
+            try {
+                orders.put(order);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -56,7 +62,11 @@ public class Parsing implements Runnable {
             order.setFilename(file.getName());
             order.setLine(++i);
             order.setResult("OK");
-            orders.add(order);
+            try {
+                orders.put(order);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
