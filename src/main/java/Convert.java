@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Convert implements Runnable {
     private LinkedBlockingQueue<Order> orders;
-    private AtomicBoolean stop = new AtomicBoolean();
+    private AtomicBoolean stop;
 
     public Convert(LinkedBlockingQueue<Order> orders, AtomicBoolean stop) {
         this.orders = orders;

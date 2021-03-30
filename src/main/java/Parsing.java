@@ -71,8 +71,7 @@ public class Parsing implements Runnable {
     }
 
     private void readFile() {
-        try {
-            BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
+        try (BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
             String line = reader.readLine();
             while (line != null) {
                 lines.add(line);
